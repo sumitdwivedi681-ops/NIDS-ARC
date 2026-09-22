@@ -1,0 +1,73 @@
+# VoltWatch - Autonomous Scalable Hybrid NIDS/NDR Security Platform
+
+## Byte-compiled / optimized
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyo
+
+## Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+## Environment files (NEVER commit real secrets)
+.env
+.env.local
+.env.production
+
+## IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+## OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+## Docker
+docker-compose.override.yml
+
+## Database
+*.db
+*.sqlite3
+*.db-journal
+*.db-wal
+*.db-shm
+
+## Logs
+logs/
+*.log
+
+## ML model artifacts (large files)
+backend/ml/models/*.pkl
+backend/ml/models/*.joblib
+backend/ml/models/*.pt
+backend/ml/models/*.onnx
+!backend/ml/models/.gitkeep
+
+## PCAP files (can be large)
+data/pcap/*.pcap
+data/pcap/*.pcapng
+!data/sample/.gitkeep
+
+## Test artifacts
+.coverage
+htmlcov/
+.pytest_cache/
+.mypy_cache/
+
+## Distribution
+dist/
+build/
+*.egg-info/
+
+## Redis dump
+dump.rdb
+
+## Node (if any)
+node_modules/

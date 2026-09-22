@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="NIDS ARC — Autonomous Scalable Hybrid NIDS/NDR Security Platform SOC Dashboard">
+    <title>NIDS ARC | SOC Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+</head>
+<body>
+    <div class="app-layout">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <span class="logo-icon">⚡</span>
+                    <span class="logo-text">NIDS ARC</span>
+                </div>
+                <button class="sidebar-toggle" id="sidebarToggle" aria-label="Toggle sidebar">☰</button>
+            </div>
+
+            <nav class="sidebar-nav">
+                <div class="nav-section">
+                    <span class="nav-section-title">DASHBOARD</span>
+                    <a href="#/" class="nav-item active" data-page="overview">
+                        <span class="nav-icon">📊</span>
+                        <span class="nav-label">Overview</span>
+                    </a>
+                </div>
+
+                <div class="nav-section">
+                    <span class="nav-section-title">MONITORING</span>
+                    <a href="#/alerts" class="nav-item" data-page="alerts">
+                        <span class="nav-icon">🔔</span>
+                        <span class="nav-label">Live Alerts</span>
+                        <span class="nav-badge" id="alertBadge">0</span>
+                    </a>
+                    <a href="#/events" class="nav-item" data-page="events">
+                        <span class="nav-icon">📋</span>
+                        <span class="nav-label">Event Explorer</span>
+                    </a>
+                    <a href="#/incidents" class="nav-item" data-page="incidents">
+                        <span class="nav-icon">🔗</span>
+                        <span class="nav-label">Incidents</span>
+                    </a>
+                    <a href="#/timeline" class="nav-item" data-page="timeline">
+                        <span class="nav-icon">📅</span>
+                        <span class="nav-label">Attack Timeline</span>
+                    </a>
+                    <a href="#/network" class="nav-item" data-page="network">
+                        <span class="nav-icon">🌐</span>
+                        <span class="nav-label">Network Activity</span>
+                    </a>
+                </div>
+
+                <div class="nav-section">
+                    <span class="nav-section-title">INFRASTRUCTURE</span>
+                    <a href="#/sensors" class="nav-item" data-page="sensors">
+                        <span class="nav-icon">📡</span>
+                        <span class="nav-label">Sensors</span>
+                    </a>
+                    <a href="#/engines" class="nav-item" data-page="engines">
+                        <span class="nav-icon">⚙️</span>
+                        <span class="nav-label">Detection Engines</span>
+                    </a>
+                    <a href="#/health" class="nav-item" data-page="health">
+                        <span class="nav-icon">💚</span>
+                        <span class="nav-label">System Health</span>
+                    </a>
+                </div>
+
+                <div class="nav-section">
+                    <span class="nav-section-title">INTELLIGENCE</span>
+                    <a href="#/threat-intel" class="nav-item" data-page="threat-intel">
+                        <span class="nav-icon">🛡️</span>
+                        <span class="nav-label">Threat Intel</span>
+                    </a>
+                    <a href="#/models" class="nav-item" data-page="models">
+                        <span class="nav-icon">🧠</span>
+                        <span class="nav-label">ML Models</span>
+                    </a>
+                    <a href="#/rules" class="nav-item" data-page="rules">
+                        <span class="nav-icon">📜</span>
+                        <span class="nav-label">Rules</span>
+                    </a>
+                </div>
+
+                <div class="nav-section">
+                    <span class="nav-section-title">OPERATIONS</span>
+                    <a href="#/responses" class="nav-item" data-page="responses">
+                        <span class="nav-icon">🎯</span>
+                        <span class="nav-label">Response Actions</span>
+                    </a>
+                    <a href="#/audit" class="nav-item" data-page="audit">
+                        <span class="nav-icon">📝</span>
+                        <span class="nav-label">Audit Logs</span>
+                    </a>
+                    <a href="#/settings" class="nav-item" data-page="settings">
+                        <span class="nav-icon">⚙️</span>
+                        <span class="nav-label">Settings</span>
+                    </a>
+                </div>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="user-info" id="userInfo">
+                    <span class="user-avatar">👤</span>
+                    <span class="user-name">admin</span>
+                    <span class="user-role badge badge-info">admin</span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Top Bar -->
+            <header class="top-bar">
+                <div class="top-bar-left">
+                    <div class="breadcrumbs" id="breadcrumbs">
+                        <span>Dashboard</span> › <span>Overview</span>
+                    </div>
+                </div>
+                <div class="top-bar-center">
+                    <div class="mode-indicator" id="modeIndicator">
+                        <span class="mode-dot simulation"></span>
+                        <span class="mode-text">SIMULATION MODE</span>
+                    </div>
+                </div>
+                <div class="top-bar-right">
+                    <button class="top-bar-btn" id="refreshBtn" title="Refresh data">🔄</button>
+                    <button class="top-bar-btn" id="loginBtn" title="Login">🔐</button>
+                </div>
+            </header>
+
+            <!-- Page Content -->
+            <div class="page-content" id="pageContent">
+                <!-- Content injected by router -->
+                <div class="loading-screen">
+                    <div class="loading-spinner"></div>
+                    <p>Initializing NIDS ARC...</p>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <footer class="status-bar">
+                <div class="status-item">
+                    <span class="status-dot healthy"></span>
+                    <span>API</span>
+                </div>
+                <div class="status-item">
+                    <span class="status-dot healthy"></span>
+                    <span>Database</span>
+                </div>
+                <div class="status-item">
+                    <span id="eventRate">0</span>
+                    <span>events/min</span>
+                </div>
+                <div class="status-item">
+                    <span id="detectionRate">0</span>
+                    <span>detections/min</span>
+                </div>
+                <div class="status-item status-time" id="statusTime"></div>
+            </footer>
+        </main>
+    </div>
+
+    <!-- Login Modal -->
+    <div class="modal-overlay" id="loginModal" style="display:none;">
+        <div class="modal">
+            <div class="modal-header">
+                <h2>🔐 NIDS ARC Login</h2>
+                <button class="modal-close" id="loginModalClose">&times;</button>
+            </div>
+            <form id="loginForm" class="modal-body">
+                <div class="form-group">
+                    <label for="loginUsername">Username</label>
+                    <input type="text" id="loginUsername" placeholder="admin" required>
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">Password</label>
+                    <input type="password" id="loginPassword" placeholder="Password" required>
+                </div>
+                <div class="form-error" id="loginError" style="display:none;"></div>
+                <button type="submit" class="btn btn-primary btn-full">Login</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
