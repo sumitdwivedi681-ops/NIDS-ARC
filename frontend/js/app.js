@@ -37,6 +37,13 @@
             item.addEventListener('click', (e) => {
                 e.preventDefault();
                 location.hash = '#/' + item.dataset.page;
+                // Auto close mobile drawer on tap
+                const sidebar = document.getElementById('sidebar');
+                const backdrop = document.getElementById('sidebarBackdrop');
+                if (sidebar && sidebar.classList.contains('open')) {
+                    sidebar.classList.remove('open');
+                    if (backdrop) backdrop.classList.remove('active');
+                }
             });
         });
         const hash = location.hash.slice(2) || 'overview';
@@ -563,8 +570,35 @@
         startAutoRefresh();
 
         document.getElementById('refreshBtn').addEventListener('click', () => renderPage(currentPage));
-        document.getElementById('sidebarToggle').addEventListener('click', () => {
-            document.getElementById('sidebar').classList.toggle('collapsed');
-        });
+
+        // Sidebar & Mobile Navigation
+        const sidebar = document.getElementById('sidebar');
+        const backdrop = document.getElementById('sidebarBackdrop');
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+
+        function toggleMobileSidebar(open) {
+            const isOpen = open !== undefined ? open : !sidebar.classList.contains('open');
+            sidebar.classList.toggle('open', isOpen);
+            if (backdrop) backdrop.classList.toggle('active', isOpen);
+        }
+
+        if (mobileMenuBtn) {
+            mobileMenuBtn.addEventListener('click', () => toggleMobileSidebar());
+        }
+
+        if (backdrop) {
+            backdrop.addEventListener('click', () => toggleMobileSidebar(false));
+        }
+
+        const sidebarToggle = document.getElementById('sidebarToggle');
+        if (sidebarToggle) {
+            sidebarToggle.addEventListener('click', () => {
+                if (window.innerWidth <= 768) {
+                    toggleMobileSidebar(false);
+                } else {
+                    sidebar.classList.toggle('collapsed');
+                }
+            });
+        }
     });
 })();
