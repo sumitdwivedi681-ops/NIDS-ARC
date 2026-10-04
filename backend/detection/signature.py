@@ -105,6 +105,8 @@ class SignatureDetector(Detector):
     def __init__(self):
         self._rules: List[SignatureRule] = []
         self._rules_loaded = False
+        self._load_default_rules()
+        self._rules_loaded = True
 
     @property
     def name(self) -> str:

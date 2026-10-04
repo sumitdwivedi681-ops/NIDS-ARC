@@ -15,6 +15,7 @@ from backend.sensors.base import BaseSensor, SensorHealthStatus
 from backend.sensors.simulation_sensor import SimulationSensor
 from backend.sensors.suricata_adapter import SuricataAdapter
 from backend.sensors.zeek_adapter import ZeekAdapter
+from backend.sensors.live_sniffer import LiveSniffer
 
 
 class SensorManager:
@@ -66,6 +67,7 @@ class SensorManager:
         """Factory creating default sensor set (Simulation + Suricata stub + Zeek stub)."""
         mgr = cls()
         mgr.register_sensor(SimulationSensor())
+        mgr.register_sensor(LiveSniffer())
         mgr.register_sensor(SuricataAdapter())
         mgr.register_sensor(ZeekAdapter())
         return mgr

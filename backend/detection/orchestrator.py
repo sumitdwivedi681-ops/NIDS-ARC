@@ -94,6 +94,17 @@ class DetectionOrchestrator:
             )
             return []
 
+    def get_detector(self, name: str) -> Optional[Detector]:
+        """Retrieve a registered detector by its identifier name."""
+        for detector in self._detectors:
+            if detector.name == name:
+                return detector
+        return None
+
+    def get_all_detectors(self) -> List[Detector]:
+        """Return all registered detectors."""
+        return list(self._detectors)
+
     def get_status(self) -> Dict[str, Any]:
         """Get orchestrator status and detector statuses."""
         return {

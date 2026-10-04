@@ -22,6 +22,7 @@ class SensorType(str, Enum):
     ZEEK = "zeek"
     EBPF = "ebpf"
     PCAP_REPLAY = "pcap_replay"
+    LIVE_SNIFFER = "live_sniffer"
 
 
 class SensorHealthStatus(str, Enum):

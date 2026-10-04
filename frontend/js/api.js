@@ -85,7 +85,27 @@ const API = {
     getEngines() { return this.get('/detections/engines'); },
     getThreatIntel() { return this.get('/threat-intel/stats'); },
     getResponseActions() { return this.get('/response/actions'); },
+    unblockIp(ip) { return this.post('/response/unblock', { ip }); },
     getIncidents() { return this.get('/incidents'); },
+    getSensors() { return this.get('/sensors'); },
+
+    // --- Rules ---
+    getRules() { return this.get('/rules'); },
+    toggleRule(id, enabled) { return this.put(`/rules/${id}/toggle`, { enabled }); },
+
+    // --- Network Activity ---
+    getNetworkActivity(hours = 24) { return this.get(`/network/activity?hours=${hours}`); },
+
+    // --- Audit Logs ---
+    getAuditLogs(params = {}) {
+        const qs = new URLSearchParams(params).toString();
+        return this.get(`/audit${qs ? '?' + qs : ''}`);
+    },
+
+    // --- Settings & Maintenance ---
+    getSettings() { return this.get('/settings'); },
+    updateSettings(data) { return this.put('/settings', data); },
+    cleanupDb() { return this.post('/maintenance/cleanup', {}); },
 
     // --- Health ---
     getHealth() { return this.request('/health', { headers: {} }); },

@@ -13,6 +13,8 @@ from uuid import uuid4
 
 import structlog
 
+from backend.response.firewall import FirewallController
+
 logger = structlog.get_logger("response_engine")
 
 
@@ -54,6 +56,7 @@ class ResponseEngine:
         self._actions: List[Dict[str, Any]] = []
         self._dry_run = dry_run
         self._manual_approval = manual_approval
+        self.firewall = FirewallController(dry_run=dry_run)
         self._load_default_policies()
 
     def _load_default_policies(self) -> None:
@@ -141,11 +144,19 @@ class ResponseEngine:
         return actions
 
     def _execute_action(self, action_type: str, target: str) -> Dict[str, Any]:
-        """Execute a response action. In production, this would integrate with network devices."""
-        # This is a placeholder — real implementation would call firewall APIs, etc.
+        """Execute a response action using the firewall controller or alert mechanisms."""
+        if action_type in ("temporary_block", "block"):
+            firewall_res = self.firewall.block_ip(target, reason="NIDS ARC Intrusion Detection")
+            return {
+                "message": firewall_res.get("message"),
+                "status": firewall_res.get("status"),
+                "firewall": firewall_res,
+                "executed_at": datetime.now(timezone.utc).isoformat(),
+            }
+
         return {
             "message": f"Action {action_type} executed against {target}",
-            "note": "Placeholder — production would integrate with network infrastructure",
+            "status": "completed",
             "executed_at": datetime.now(timezone.utc).isoformat(),
         }
 
@@ -154,15 +165,29 @@ class ResponseEngine:
         return [a for a in self._actions if a.get("status") == "pending_approval"]
 
     def approve_action(self, action_id: str, approved_by: str) -> Optional[Dict[str, Any]]:
-        """Approve a pending action."""
+        """Approve a pending action and execute it."""
         for action in self._actions:
             if action["action_id"] == action_id and action["status"] == "pending_approval":
                 action["status"] = "approved"
                 action["approved_by"] = approved_by
                 action["approved_at"] = datetime.now(timezone.utc).isoformat()
-                logger.info("response_approved", action_id=action_id, approved_by=approved_by)
+                
+                # Execute action upon approval
+                target_entity = action.get("target", {}).get("entity", "")
+                exec_res = self._execute_action(action["action_type"], target_entity)
+                action["result"] = exec_res
+
+                logger.info("response_approved_and_executed", action_id=action_id, approved_by=approved_by)
                 return action
         return None
+
+    def unblock_ip(self, ip: str) -> Dict[str, Any]:
+        """Unblock an IP from the host firewall."""
+        return self.firewall.unblock_ip(ip)
+
+    def list_blocked_ips(self) -> List[Dict[str, Any]]:
+        """List active blocked IPs."""
+        return self.firewall.list_blocked()
 
     def reject_action(self, action_id: str, rejected_by: str) -> Optional[Dict[str, Any]]:
         """Reject a pending action."""

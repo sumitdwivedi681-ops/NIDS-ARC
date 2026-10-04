@@ -21,10 +21,10 @@ class DetectionContext:
     timestamp: datetime
     src_ip: str
     dst_ip: str
-    src_port: Optional[int]
-    dst_port: Optional[int]
-    protocol: Optional[str]
-    event_type: str
+    src_port: Optional[int] = None
+    dst_port: Optional[int] = None
+    protocol: Optional[str] = "TCP"
+    event_type: str = "connection"
     bytes_sent: int = 0
     bytes_received: int = 0
     packets_sent: int = 0

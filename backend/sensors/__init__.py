@@ -12,6 +12,7 @@ from backend.sensors.base import (
 from backend.sensors.simulation_sensor import SimulationSensor
 from backend.sensors.suricata_adapter import SuricataAdapter
 from backend.sensors.zeek_adapter import ZeekAdapter
+from backend.sensors.live_sniffer import LiveSniffer
 from backend.sensors.manager import SensorManager
 
 __all__ = [
@@ -23,5 +24,6 @@ __all__ = [
     "SimulationSensor",
     "SuricataAdapter",
     "ZeekAdapter",
+    "LiveSniffer",
     "SensorManager",
 ]
